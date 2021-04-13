@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="EndiManager" default="load" basedir = ".">
+ 
+    <basename file="${basedir}" property="project.projectname"/>
+    
+    <property name="serverlocation" location="C:\Users\Catzy\Desktop\testserver\"/>
+    <property name="project.pluginsLocation" location="C:\Users\Catzy\Desktop\testserver\plugins\"/>
+
+    <target name="clean" description="Cleans project" depends="unload">
+        <delete file="${project.pluginsLocation}\${project.projectname}.jar"/>
+    </target>
+ 
+    <target name="CreateJar" description="Create a jar for the project" depends="clean">
+        <jar destfile="${project.pluginsLocation}\${project.projectname}.jar">
+           <fileset dir="${basedir}">
+              <include name="**.yml"/>
+           </fileset>
+           <fileset dir="${basedir}\bin">
+               <include name="**"/>
+           </fileset>
+        	<zipfileset excludes="META-INF/*.SF" src="C:/Users/Catzy/Dropbox/Eclipse/api/!me/MicroHTTPServer.jar"/>
+        </jar>
+    	<sleep milliseconds="200"/>
+    </target>
+    
+    <target name="unload">
+    	<exec dir="${serverlocation}/rcon" executable="${serverlocation}/rcon/rcon-cli.exe">
+    		<arg value="--host"/>
+    		<arg value="localhost"/>
+    		<arg value="--port"/>
+    		<arg value="25575"/>
+    		<arg value="--password"/>
+    		<arg value="12341234"/>
+    		<arg value="plugman unload EndiManager"/>
+    	</exec>
+    </target>
+    <target name="load" depends="CreateJar">
+    	<exec dir="${serverlocation}/rcon" executable="${serverlocation}/rcon/rcon-cli.exe">
+    		<arg value="--host"/>
+    		<arg value="localhost"/>
+    		<arg value="--port"/>
+    		<arg value="25575"/>
+    		<arg value="--password"/>
+    		<arg value="12341234"/>
+    		<arg value="plugman load EndiManager"/>
+    	</exec>
+    </target>
+</project>
+
+<!--<?xml version="1.0"?>
+ Configuration of the Ant build system to generate a Jar file 
+<project name="EndiManager" default="CreateJar">
+	<target name="CreateJar" description="Create Jar file">
+		<jar jarfile="./server/plugins/EndiManager.jar">
+			<fileset dir="${basedir}">
+				<include name="**.yml" />
+			</fileset>
+			<fileset dir="${basedir}\bin">
+				<include name="**" />
+			</fileset>
+		</jar>
+	</target>
+</project>-->
+<!-- 
+https://www.spigotmc.org/wiki/guide-how-to-auto-export-your-plugin-using-ant/
+https://www.spigotmc.org/threads/tutorial-live-eclipse-plugin-development-for-spigot-servers.64362/
+rcon-cli.exe -host localhost -port 25575 -password 12341234 say x
+-->

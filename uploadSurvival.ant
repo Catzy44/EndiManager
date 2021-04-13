@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="EndiManager" default="upload" basedir=".">
+
+	<basename file="${basedir}" property="project.projectname" />
+	
+	<property file="build.properties"/>
+
+	<target name="upload">
+		<sequential>
+			<jar destfile="${jarfile}.jar">
+				<fileset dir="${basedir}">
+					<include name="**.yml" />
+				</fileset>
+				<fileset dir="${basedir}\bin">
+					<include name="**" />
+				</fileset>
+				<zipfileset excludes="META-INF/*.SF" src="C:/Users/Catzy/Dropbox/Eclipse/api/!me/MicroHTTPServer.jar" />
+			</jar>
+
+			<exec executable="rcon-cli.exe">
+				<arg value="--host" />
+				<arg value="${ftp-server}" />
+				<arg value="--port" />
+				<arg value="${query-port}" />
+				<arg value="--password" />
+				<arg value="${query-password}" />
+				<arg value="plugman unload EndiManager" />
+			</exec>
+
+			<ftp server="${ftp-server}" remotedir="${ftp-remotedir}" userid="${ftp-userid}" password="${ftp-password}" action="send" verbose="yes" passive="yes">
+				<fileset file="${jarfile}.jar" />
+			</ftp>
+
+			<exec executable="rcon-cli.exe">
+				<arg value="--host" />
+				<arg value="${ftp-server}" />
+				<arg value="--port" />
+				<arg value="${query-port}" />
+				<arg value="--password" />
+				<arg value="${query-password}" />
+				<arg value="plugman load EndiManager" />
+			</exec>
+		</sequential>
+	</target>
+
+</project>
