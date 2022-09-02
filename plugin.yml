@@ -1,0 +1,16 @@
+name: EndiManager
+version: 1
+main: me.przemovi.EndiManager
+api-version: 1.19
+commands:
+  endiman:
+    description: EndiManager
+  paczka:
+    description: Zmiana paczki zasobów
+  rtp:
+    description: losowe tp
+  discord:
+    description: discord
+softdepend: [FunnyGuilds,PlayerProfiles,Vault]
+depend: [Vault,AuthMe]
+authors: [PrzemoVi,Yasei_WilQ]
