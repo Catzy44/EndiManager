@@ -31,12 +31,11 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.TranslatableComponent;
-import net.skinsrestorer.api.SkinsRestorerAPI;
+import net.skinsrestorer.api.SkinsRestorer;
 
 public class ChatProfile {
 	private static Gson gson = new Gson();
 	//private static Logger logger = PlayerProfiles.plugin.getLogger();
-	private static SkinsRestorerAPI skinsAPI;
 	
 	public static BaseComponent[] genChatProfile(Player player, User user, Guild guild) throws Exception {
 		ComponentBuilder container = new ComponentBuilder("");

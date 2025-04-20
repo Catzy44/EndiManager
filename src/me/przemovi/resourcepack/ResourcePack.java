@@ -60,6 +60,7 @@ public class ResourcePack {
 			refreshingStarted = -1;
 		} catch (Exception e) {
 			EndiManager.debug("[RP] Refreshing hash FAILED!");
+			EndiManager.debug(hashUrl);
 			if(attemp < 3) {
 				EndiManager.debug("[RP] Attemp #"+attemp+"...");
 				try {Thread.sleep(500);} catch (InterruptedException e1) {}

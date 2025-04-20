@@ -19,8 +19,8 @@ import org.bukkit.World;
 
 import com.google.gson.JsonObject;
 
-import me.catzy.HttpServer;
-import me.catzy.HttpServerAction;
+import me.kotsu.microHTTPServer.HttpServer;
+import me.kotsu.microHTTPServer.HttpServerAction;
 import me.przemovi.EndiManager;
 import me.przemovi.utils.PreviewGenerator;
 import net.dzikoysk.funnyguilds.FunnyGuilds;

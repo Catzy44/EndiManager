@@ -19,18 +19,28 @@ import net.md_5.bungee.api.chat.hover.content.Item;
 import net.md_5.bungee.api.chat.hover.content.ItemSerializer;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import net.md_5.bungee.api.chat.hover.content.TextSerializer;
+import net.md_5.bungee.chat.ChatVersion;
 import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.chat.KeybindComponentSerializer;
 import net.md_5.bungee.chat.ScoreComponentSerializer;
 import net.md_5.bungee.chat.SelectorComponentSerializer;
 import net.md_5.bungee.chat.TextComponentSerializer;
 import net.md_5.bungee.chat.TranslatableComponentSerializer;
+import net.md_5.bungee.chat.VersionedComponentSerializer;
 
 public class CSerializer {
-	private static final Gson gson = new GsonBuilder().registerTypeAdapter(BaseComponent.class, new ComponentSerializer()).registerTypeAdapter(TextComponent.class, new TextComponentSerializer())
-			.registerTypeAdapter(TranslatableComponent.class, new TranslatableComponentSerializer()).registerTypeAdapter(KeybindComponent.class, new KeybindComponentSerializer())
-			.registerTypeAdapter(ScoreComponent.class, new ScoreComponentSerializer()).registerTypeAdapter(SelectorComponent.class, new SelectorComponentSerializer()).registerTypeAdapter(Entity.class, new EntitySerializer())
-			.registerTypeAdapter(Text.class, new TextSerializer()).registerTypeAdapter(Item.class, new ItemSerializer()).registerTypeAdapter(ItemTag.class, new ItemTag.Serializer()).create();
+	private static final VersionedComponentSerializer ver = VersionedComponentSerializer.forVersion(ChatVersion.V1_21_5);
+	private static final Gson gson = new GsonBuilder()
+			.registerTypeAdapter(BaseComponent.class, new ComponentSerializer())
+			.registerTypeAdapter(TextComponent.class, new TextComponentSerializer(ver))
+			.registerTypeAdapter(TranslatableComponent.class, new TranslatableComponentSerializer(ver))
+			.registerTypeAdapter(KeybindComponent.class, new KeybindComponentSerializer(ver))
+			.registerTypeAdapter(ScoreComponent.class, new ScoreComponentSerializer(ver))
+			.registerTypeAdapter(SelectorComponent.class, new SelectorComponentSerializer(ver))
+			.registerTypeAdapter(Entity.class, new EntitySerializer(ver))
+			.registerTypeAdapter(Text.class, new TextSerializer())
+			.registerTypeAdapter(Item.class, new ItemSerializer())
+			.registerTypeAdapter(ItemTag.class, new ItemTag.Serializer()).create();
 	public static final ThreadLocal<Set<BaseComponent>> serializedComponents = new ThreadLocal<Set<BaseComponent>>();
 
 	public static BaseComponent[] parse(String json) {

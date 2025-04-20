@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_20_R3.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.v1_21_R4.util.CraftMagicNumbers;
 import org.bukkit.map.MapPalette;
 
 import me.przemovi.EndiManager;

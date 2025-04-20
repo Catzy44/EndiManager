@@ -4,7 +4,6 @@
 	<classpathentry kind="lib" path="../../api/mcapi/Vault.jar"/>
 	<classpathentry kind="lib" path="../../api/serialization/gson-2.8.2.jar"/>
 	<classpathentry kind="lib" path="../../api/mcapi/FunnyGuilds 4.10.1 (MC 1.8-1.18).jar"/>
-	<classpathentry kind="lib" path="../../api/!me/MicroHTTPServer.jar"/>
 	<classpathentry kind="lib" path="../../api/mcapi/AuthMe-5.4.0.jar"/>
 	<classpathentry kind="lib" path="../../api/mcapi/worldguard-bukkit-7.0.1.jar"/>
 	<classpathentry kind="lib" path="../../api/mcapi/worldedit-bukkit-7.0.0-beta-04.jar"/>
@@ -22,13 +21,13 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Catzy/Dropbox/Eclipse/api/mcapi/SkinsRestorer.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Catzy/Dropbox/Eclipse/api/spigot,bukkit,bungeecord/1.20.4/spigot-1.20.4-R0.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Catzy/Dropbox/Eclipse/api/spigot,bukkit,bungeecord/1.20.4/spigot-api-1.20.4-R0.1-SNAPSHOT-shaded.jar"/>
+	<classpathentry kind="lib" path="/home/kotsu/Eclipse/api/spigot,bukkit,bungeecord/1.21.5/spigot-1.21.5-R0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/home/kotsu/Eclipse/api/spigot,bukkit,bungeecord/1.21.5/spigot-api-1.21.5-R0.1-SNAPSHOT-shaded.jar"/>
+	<classpathentry kind="lib" path="/home/kotsu/Eclipse/api/mcapi/skinsrestorer-api-15.6.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

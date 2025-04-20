@@ -174,16 +174,26 @@ public class RPlayer {
 				
 				
 				
-				&8&m--------------------------&r
+				&8&m----------------------------------&r
+				
 				&6Witaj przybyszu!
 				
-				&7Aby zacząć swoją przygodę
-				na serwerze &5EndiMC &7musisz już tylko
+				&fAby zacząć swoją przygodę
+				na serwerze &5EndiMC &fmusisz już tylko
 				zaakceptować naszą paczkę zasobów!
+				&7Jej rozmiar to około 10MB.
 				
 				&3Jesteś gotowy?
-				&7Kliknij przycisk po lewej stronie ;)
-				&8&m--------------------------&r
+				&fKliknij przycisk po lewej stronie ;)
+				
+				&8&m----------------------------------&r
+				
+				&cUwaga! Ten komunikat możemy wyświetlić tylko raz.
+				Jeżeli nie zaakceptujesz teraz naszej paczki zasobów
+				bez której gra na naszym serwerze jest problematyczna
+				żeby zainstalować ją w przyszłości będziesz musiał
+				zrobić to ręcznie poprzez menu gry:
+				lista serwerów->ten serwer->edytuj->paczki zasobów
 				
 				""");
 		player.setResourcePack(x.getUrl()+"#"+x.getHash(), x.getHashBytes(), m, !player.isOp());

@@ -68,7 +68,7 @@ public class SpawnEffectApplierTask extends BukkitRunnable{
 			@Override
 			public void run() {
 				for(RPlayer rp : list) {
-					rp.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING,10*20, 0, true, false));
+					rp.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE,10*20, 0, true, false));
 				}
 			}
 		}.runTaskLater(EndiManager.plugin, 1);
