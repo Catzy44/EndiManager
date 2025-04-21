@@ -4,17 +4,20 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.google.gson.JsonObject;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 
+import me.przemovi.database.Config;
 import me.przemovi.players.RPlayer;
 import me.przemovi.players.RPlayerMan;
 import me.przemovi.struct.CustCommand;
@@ -37,26 +40,40 @@ public class RandomTP implements Listener{
 		return EndiManager.plugin.getServer().getPluginManager().isPluginEnabled("FunnyGuilds");
 	}
 	
-	private final int range = 10000;
+	private final int range = 5000;
 	private Random r = new Random();
 	private ProtectedRegion spawn = null;
-	private World w;
 	private net.dzikoysk.funnyguilds.guild.RegionManager rm = null;
 	private Location spawnLoc;
+	
+	public boolean isInSpawnRegion(Location l) {
+		return spawn.contains(BukkitAdapter.asBlockVector(l));
+	}
 	
 	public void start() {
 		EndiManager.plugin.getServer().getPluginManager().registerEvents(this, EndiManager.plugin);
 		
-		w = Bukkit.getWorld("world");
-		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-		RegionManager regions = container.get(BukkitAdapter.adapt(w));
-		spawn = regions.getRegion("obokspawn");
-		if(guildsEnabled()) {
-			rm = FunnyGuilds.getInstance().getRegionManager();
-		} else {
-			EndiManager.log("ERR FunnyGuilds not found");
+		{
+			JsonObject config = Config.getDatabase();
+			JsonObject rtp = config.get("rtp").getAsJsonObject();
+			JsonObject spawn = rtp.get("spawn").getAsJsonObject();
+			spawnLoc = new Location(
+					Bukkit.getWorld(spawn.get("world").getAsString()),
+					spawn.get("x").getAsFloat(),
+					spawn.get("y").getAsFloat(),
+					spawn.get("z").getAsFloat());
 		}
-		spawnLoc = w.getSpawnLocation();
+		
+		{
+			RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+			RegionManager regions = container.get(BukkitAdapter.adapt(spawnLoc.getWorld()));
+			spawn = regions.getRegion("obokspawn");
+			if(guildsEnabled()) {
+				rm = FunnyGuilds.getInstance().getRegionManager();
+			} else {
+				EndiManager.log("ERR FunnyGuilds not found");
+			}
+		}
 		
 		new CustCommand("rtp") {
 			@Override
@@ -71,18 +88,26 @@ public class RandomTP implements Listener{
 					int s = secs%60;
 					
 					String time = m+" minut i "+s+" sekund";
-					sender.spigot().sendMessage(new ComponentBuilder().append(new TranslatableComponent("endi.2d.chat.other.warn")).append(new TextComponent(" Musisz odczekać jeszcze "+time+"!")).create());
+					sender.spigot().sendMessage(new ComponentBuilder().append(new TranslatableComponent("endi.2d.chat.other.warn"))
+							.append(new TextComponent(" Musisz odczekać jeszcze "+time+"!")).create());
 					return;
 				}
 				rp.lastRTPUsage = System.currentTimeMillis();
 				
-				sender.spigot().sendMessage(new ComponentBuilder().append(new TranslatableComponent("endi.2d.chat.other.success")).append(new TextComponent(" Teleportacja...")).create());
+				sender.spigot().sendMessage(new ComponentBuilder().append(new TranslatableComponent("endi.2d.chat.other.success"))
+						.append(new TextComponent(" Szukam bezpiecznej lokalizacji...")).create());
 				
 				
 				Location l = randomizeLocation();
 				if(l == null) {
+					sender.spigot().sendMessage(new ComponentBuilder().append(new TranslatableComponent("endi.2d.chat.other.warn"))
+							.append(new TextComponent(" Nie udało się znaleźć bezpiecznej lokazji. Spróbuj ponownie później.")).create());
 					return;
 				}
+				
+				sender.spigot().sendMessage(new ComponentBuilder().append(new TranslatableComponent("endi.2d.chat.other.success"))
+						.append(new TextComponent(" Teleportacja..")).create());
+				
 				new BukkitRunnable() {
 					@Override
 					public void run() {
@@ -99,9 +124,11 @@ public class RandomTP implements Listener{
 	}
 
 	public Location randomizeLocation(int attemp) {
-		if(attemp >= 10) {
+		if(attemp >= 15) {
 			return null;
 		}
+		
+		World w = spawnLoc.getWorld();
 		
 		int spawnX = spawnLoc.getBlockX();
 		int spawnY = spawnLoc.getBlockY();
@@ -120,14 +147,21 @@ public class RandomTP implements Listener{
 			return randomizeLocation(attemp+1);
 		}
 		
-		if(spawn.contains(BukkitAdapter.asBlockVector(found))) {
+		if(isInSpawnRegion(found)) {
 			return randomizeLocation(attemp+1);
 		}
+		
+		found.setY(w.getHighestBlockAt(found).getY());
 		
 		if(w.getBlockAt(found).isLiquid()) {
 			return randomizeLocation(attemp+1);
 		}
 		
-		return new Location(w,x,w.getHighestBlockYAt(x, z),z);
+		if(w.getBlockAt(found.add(0, 1, 0)).getType() != Material.AIR ||
+				w.getBlockAt(found.add(0,2,0)).getType() != Material.AIR) {
+			return randomizeLocation(attemp+1);
+		}
+		
+		return found.add(0, 1, 0);
 	}
 }

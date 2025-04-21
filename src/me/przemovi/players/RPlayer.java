@@ -133,6 +133,7 @@ public class RPlayer {
 			BaseComponent[] s = message.create();
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				if(!isLoggedAndHasResourcepackLoaded()) {
+					System.out.println("MESSAMESS <----------------");
 					continue;
 				}
 				if(p == player) {
